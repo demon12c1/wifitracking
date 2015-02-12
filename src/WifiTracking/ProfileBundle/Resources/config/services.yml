@@ -1,0 +1,7 @@
+parameters:
+    profile.profile_manager.class: WifiTracking\ProfileBundle\Manager\ProfileManager
+
+services:
+    profile_manager:
+        class: %profile.profile_manager.class%
+        arguments: [@doctrine.orm.entity_manager, @service_container]

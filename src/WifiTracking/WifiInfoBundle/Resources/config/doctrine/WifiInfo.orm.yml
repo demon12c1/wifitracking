@@ -1,0 +1,29 @@
+WifiTracking\WifiInfoBundle\Entity\WifiInfo:
+    type: entity
+    table: null
+    repositoryClass: WifiTracking\WifiInfoBundle\Entity\WifiInfoRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        longtitude:
+            type: string
+            length: 255
+        latitude:
+            type: string
+            length: 255
+        wifiName:
+            type: string
+            length: 255
+            column: wifi_name
+        wifiPass:
+            type: string
+            length: 255
+            column: wifi_pass
+        description:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

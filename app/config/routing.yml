@@ -1,0 +1,19 @@
+profile:
+    resource: "@ProfileBundle/Resources/config/routing.yml"
+    prefix:   /
+
+core:
+    resource: "@CoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+wifi_tracking_wifi_info:
+    resource: "@WifiTrackingWifiInfoBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: @AppBundle/Controller/
+    type:     annotation
+WifiTrackingWifiInfoBundle:
+    resource: "@WifiTrackingWifiInfoBundle/Resources/config/routing.yml"
+    prefix:   /

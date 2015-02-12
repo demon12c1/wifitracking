@@ -1,0 +1,11 @@
+# src/Wifi/WifiInfoBundle/Resources/config/routing.yml
+WifiTrackingBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: WifiTrackingWifiInfoBundle:Default:index }
+WifiTrackingBundle_getInfo:
+    pattern:  /wifi
+    defaults: { _controller: WifiTrackingWifiInfoBundle:Default:get, _format: ~ }
+WifiTrackingBundle_createInfo:
+    pattern:  /wifi/create
+    defaults: { _controller: WifiTrackingWifiInfoBundle:Default:createWifi, _format: ~ }
+

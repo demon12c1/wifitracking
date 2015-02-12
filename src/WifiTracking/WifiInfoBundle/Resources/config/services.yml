@@ -1,0 +1,7 @@
+parameters:
+    wifi.wifi_manager.class: WifiTracking\WifiInfoBundle\Manager\WifiActionManager
+
+services:
+    wifi_manager:
+        class: %wifi.wifi_manager.class%
+        arguments: [@doctrine.orm.entity_manager, @service_container]

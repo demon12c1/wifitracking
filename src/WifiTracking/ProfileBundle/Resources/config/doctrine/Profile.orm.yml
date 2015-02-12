@@ -1,0 +1,35 @@
+WifiTracking\ProfileBundle\Entity\Profile:
+    type: entity
+    table: Profile
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        profileId:
+            type: string
+            length: 255
+            column: profile_id
+        profilePassword:
+            type: string
+            length: 255
+            column: profile_password
+        profileEmail:
+            type: string
+            length: 255
+            column: profile_email
+        profileWifiQuantity:
+            type: integer
+            column: profile_wifi_quantity
+        enabled:
+            type: boolean
+        status:
+            type: boolean
+        created:
+            type: datetime
+            gedmo:
+              timestampable:
+                on: create
+    lifecycleCallbacks: {  }
