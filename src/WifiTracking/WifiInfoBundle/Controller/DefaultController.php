@@ -61,6 +61,7 @@ class DefaultController extends Controller
                     'wifiName' => $wifi->getWifiName(),
                     'wifiPass' => $wifi->getWifiPass(),
                     'description' => $wifi->getDescription(),
+                    'external_ip' => $wifi->getExternalIpWifi()
                 );
             }
         }
@@ -78,6 +79,7 @@ class DefaultController extends Controller
                 'wifiName' => $wifi->getWifiName(),
                 'wifiPass' => $wifi->getWifiPass(),
                 'description' => $wifi->getDescription(),
+                'external_ip' => $wifi->getExternalIpWifi()
             );
 
         }
@@ -115,6 +117,9 @@ class DefaultController extends Controller
             $wifiName = $request->request->get('wifiName');
             $wifiPass = $request->request->get('wifiPass');
             $description = $request->request->get('description');
+            $external_ip = $request->request->get('external_ip');
+
+
 
             $wifi_info = array(
                 'longtitude' => $longtitude,
@@ -122,12 +127,15 @@ class DefaultController extends Controller
                 'wifiName' => $wifiName,
                 'wifiPass' => $wifiPass,
                 'description' => $description,
+                'external_ip' => &$external_ip
             );
-
             $result = $wifi_manager->createData($wifi_info);
 
+
+
+
             // result variable is a error message return from create data
-            if($result){
+            if(!is_object($result)){
                 $status = 0;
                 $message = $result;
                 $resultData = array(
@@ -136,6 +144,7 @@ class DefaultController extends Controller
                 );
                 return ResponseUtil::json(ResponseUtil::FAILED,$resultData);
             }else{
+                $external_ip = $result->getExternalIpWifi();
                 $status = 1;
                 $message = "Create wifi successfully";
                 $resultData = array(

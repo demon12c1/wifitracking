@@ -26,4 +26,7 @@ WifiTracking\WifiInfoBundle\Entity\WifiInfo:
         description:
             type: string
             length: 255
+        external_ip_wifi:
+            type: string
+            length: 255
     lifecycleCallbacks: {  }

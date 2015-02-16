@@ -164,4 +164,32 @@ class WifiInfo
     {
         return $this->description;
     }
+    /**
+     * @var string
+     */
+    private $external_ip_wifi;
+
+
+    /**
+     * Set external_ip_wifi
+     *
+     * @param string $externalIpWifi
+     * @return WifiInfo
+     */
+    public function setExternalIpWifi($externalIpWifi)
+    {
+        $this->external_ip_wifi = $externalIpWifi;
+
+        return $this;
+    }
+
+    /**
+     * Get external_ip_wifi
+     *
+     * @return string 
+     */
+    public function getExternalIpWifi()
+    {
+        return $this->external_ip_wifi;
+    }
 }
