@@ -2,6 +2,7 @@
 
 namespace WifiTracking\WifiInfoBundle\Controller;
 
+use Doctrine\Common\Util\Debug;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -61,7 +62,8 @@ class DefaultController extends Controller
                     'wifiName' => $wifi->getWifiName(),
                     'wifiPass' => $wifi->getWifiPass(),
                     'description' => $wifi->getDescription(),
-                    'external_ip' => $wifi->getExternalIpWifi()
+                    'external_ip' => $wifi->getExternalIpWifi(),
+                    'bssid' => $wifi->getBssidWifi()
                 );
             }
         }
@@ -114,27 +116,29 @@ class DefaultController extends Controller
 
             $longtitude = $request->request->get('longtitude');
             $latitude = $request->request->get('latitude');
-            $wifiName = $request->request->get('wifiName');
+            $wifiName = $request->request->get('bssid');
             $wifiPass = $request->request->get('wifiPass');
             $description = $request->request->get('description');
             $external_ip = $request->request->get('external_ip');
-
+            $bssid = $request->request->get('bssid');
 
 
             $wifi_info = array(
                 'longtitude' => $longtitude,
                 'latitude' => $latitude,
-                'wifiName' => $wifiName,
+                'wifiName' => $bssid,
                 'wifiPass' => $wifiPass,
                 'description' => $description,
-                'external_ip' => &$external_ip
+                'external_ip' => &$external_ip,
+                'bssid' => $bssid
+
             );
             $result = $wifi_manager->createData($wifi_info);
 
 
 
 
-            // result variable is a error message return from create data
+            // result variable is a error message return from created data
             if(!is_object($result)){
                 $status = 0;
                 $message = $result;
@@ -154,6 +158,82 @@ class DefaultController extends Controller
                 );
                 return ResponseUtil::json(ResponseUtil::SUCCESS,$resultData);
             }
+    }
+
+    public function updateWifiAction(Request $request){
+        ///////Check Api key//////
+        $checkApiKeyIsWrong = $this->checkApiKey($request);
+        if(isset($checkApiKeyIsWrong) && !empty($checkApiKeyIsWrong)){
+            return $checkApiKeyIsWrong;
+        }
+        //////////////////////////
+        $wifi_manager = $this->get('wifi_manager');
+
+        $wifiName = $request->request->get('bssid');
+        $wifiPass = $request->request->get('wifiPass');
+
+        $wifiParam = array(
+            "wifi_name" => $wifiName,
+            "wifi_pass" => $wifiPass
+        );
+
+        $wifiInfo = $wifi_manager->getWifiByName($wifiName);
+        $result = false;
+        if(isset($wifiInfo) && !empty($wifiInfo)){
+            $result = $wifi_manager->updateWifiInfo($wifiInfo,$wifiParam);
+        }
+
+
+
+        if($result){
+            $status = 1;
+            $message = "Update password successfully";
+        }else{
+            $status = 0;
+            $message = "Update password failed";
+        }
+
+        $resultData = array(
+            'status' => $status,
+            'wifi_info' => $wifiParam,
+            'message' => $message,
+        );
+
+
+        if($result == 0){
+            return ResponseUtil::json(ResponseUtil::FAILED,$resultData);
+        }
+        else{
+            return ResponseUtil::json(ResponseUtil::SUCCESS,$resultData);
+        }
+    }
+
+    public function getWifiStoreAction(Request $request){
+        ///////Check Api key//////
+        $checkApiKeyIsWrong = $this->checkApiKey($request);
+        if(isset($checkApiKeyIsWrong) && !empty($checkApiKeyIsWrong)){
+            return $checkApiKeyIsWrong;
+        }
+        //////////////////////////
+
+        $wifi_manager = $this->get('wifi_manager');
+        $wifiName = $request->request->get('bssid');
+        $wifiInfo = $wifi_manager->getWifiByName($wifiName);
+        $wifiStoredInfos = $wifi_manager->getUpdateWifiInfo($wifiInfo);
+
+        $wifiStoredArray = array();
+        $i = 0;
+        foreach($wifiStoredInfos as $wifiStoredInfo){
+            $wifiStoredArray[$i]["wifi_name"] = $wifiStoredInfo->getWifiName();
+            $wifiStoredArray[$i]["wifi_pass"] = $wifiStoredInfo->getWifiPass();
+            $i++;
+        }
+        $resultData = array(
+            'status' => 1,
+            'wifi_infos' => $wifiStoredArray
+        );
+        return ResponseUtil::json(ResponseUtil::SUCCESS,$resultData);
+
     }
 
 

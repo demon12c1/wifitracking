@@ -39,6 +39,15 @@ class WifiInfo
      */
     private $description;
 
+    /**
+     * @var string
+     */
+    private $external_ip_wifi;
+
+    /**
+     * @var string
+     */
+    private $bssid_wifi;
 
     /**
      * Get id
@@ -164,10 +173,6 @@ class WifiInfo
     {
         return $this->description;
     }
-    /**
-     * @var string
-     */
-    private $external_ip_wifi;
 
 
     /**
@@ -191,5 +196,28 @@ class WifiInfo
     public function getExternalIpWifi()
     {
         return $this->external_ip_wifi;
+    }
+
+    /**
+     * Set bssid_wifi
+     *
+     * @param string $bssidWifi
+     * @return WifiInfo
+     */
+    public function setBssidWifi($bssidWifi)
+    {
+        $this->bssid_wifi = $bssidWifi;
+
+        return $this;
+    }
+
+    /**
+     * Get bssid_wifi
+     *
+     * @return string
+     */
+    public function getBssidWifi()
+    {
+        return $this->bssid_wifi;
     }
 }

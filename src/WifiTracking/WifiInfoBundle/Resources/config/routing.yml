@@ -8,4 +8,9 @@ WifiTrackingBundle_getInfo:
 WifiTrackingBundle_createInfo:
     pattern:  /wifi/create
     defaults: { _controller: WifiTrackingWifiInfoBundle:Default:createWifi, _format: ~ }
-
+WifiTrackingBundle_updateInfo:
+    pattern:  /wifi/update
+    defaults: { _controller: WifiTrackingWifiInfoBundle:Default:updateWifi, _format: ~ }
+WifiTrackingBundle_getUpdateInfo:
+    pattern:  /wifi/get-update
+    defaults: { _controller: WifiTrackingWifiInfoBundle:Default:getWifiStore, _format: ~ }

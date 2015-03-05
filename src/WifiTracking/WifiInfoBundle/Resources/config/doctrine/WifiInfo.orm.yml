@@ -29,4 +29,7 @@ WifiTracking\WifiInfoBundle\Entity\WifiInfo:
         external_ip_wifi:
             type: string
             length: 255
+        bssid_wifi:
+            type: string
+            length: 255
     lifecycleCallbacks: {  }

@@ -4,6 +4,7 @@ namespace WifiTracking\WifiInfoBundle\Manager;
 use Doctrine\ORM\EntityManager as EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use WifiTracking\WifiInfoBundle\Entity\WifiInfo;
+use WifiTracking\WifiInfoBundle\Entity\WifiPasswordListStore;
 
 class WifiActionManager
 {
@@ -25,6 +26,10 @@ class WifiActionManager
 
     public function getAllData(){
         return $this->objWifiManager->findAll();
+    }
+
+    public function getWifiByName($name){
+        return $this->objWifiManager->findOneBy(array("wifiName"=>$name));
     }
 
     public function createData($data){
@@ -53,10 +58,41 @@ class WifiActionManager
         $wifi->setWifiPass($data['wifiPass']);
         $wifi->setDescription($data['description']);
         $wifi->setExternalIpWifi($this->get_client_ipaddress());
+        $wifi->setBssidWifi($data['bssid']);
         $this->objEm->persist($wifi);
         $this->objEm->flush();
         $this->objEm->clear();
         return $wifi;
+    }
+
+    public function updateWifiInfo($wifiObj,$param){
+        if(isset($param["wifi_pass"]) && !empty($param["wifi_pass"])){
+            $wifiStore = new WifiPasswordListStore();
+            $wifiStore->setWifi($wifiObj);
+            $wifiStore->setWifiName($param["wifi_name"]);
+            $wifiStore->setWifiPass($param["wifi_pass"]);
+            $this->objEm->persist($wifiStore);
+            $this->objEm->flush();
+            $this->objEm->clear();
+            return true;
+        }else{
+            return false;
+        }
+
+
+    }
+
+    public function getUpdateWifiInfo($wifiObj){
+        $query = new QueryBuilder($this->objEm);
+        $result = array();
+        $query->select('w')
+            ->from('WifiTrackingWifiInfoBundle:WifiPasswordListStore','w')
+            ->where('w.wifi = :wifi')
+            ->setParameter('wifi',$wifiObj);
+
+        $result = $query->getQuery()->getResult();
+
+        return $result;
     }
 
     function get_client_ipaddress() {
