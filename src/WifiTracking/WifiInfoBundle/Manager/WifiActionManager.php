@@ -43,14 +43,23 @@ class WifiActionManager
         if(empty($data['wifiName'])){
             return "wifi name is null";
         }
+        if(empty($data['mac'])){
+            return "Mac address is null";
+        }
         $clientIp = $this->get_client_ipaddress();
         if(isset($clientIp) && !empty($clientIp)){
             $checkIp =  $this->isWifiIpUsed($this->get_client_ipaddress());
         }
-        if(isset($checkIp) && !empty($checkIp)){
-            return "This wifi address has already posted";
+        if(isset($data['mac']) && !empty($data['mac'])){
+            $checkMac =  $this->isWifiMacUsed($data['mac']);
         }
 
+        if(isset($checkIp) && !empty($checkIp)){
+            return "This wifi Ip address has already posted";
+        }
+        if(isset($checkMac) && !empty($checkMac)){
+            return "This wifi Mac address has already posted";
+        }
         $wifi = new WifiInfo();
         $wifi->setLongtitude($data['longtitude']);
         $wifi->setLatitude($data['latitude']);
@@ -59,6 +68,7 @@ class WifiActionManager
         $wifi->setDescription($data['description']);
         $wifi->setExternalIpWifi($this->get_client_ipaddress());
         $wifi->setBssidWifi($data['bssid']);
+        $wifi->setMac($data['mac']);
         $this->objEm->persist($wifi);
         $this->objEm->flush();
         $this->objEm->clear();
@@ -128,5 +138,17 @@ class WifiActionManager
         return $result;
     }
 
+    function isWifiMacUsed($mac){
+        $query = new QueryBuilder($this->objEm);
+        $result = array();
+        $query->select('w')
+            ->from('WifiTrackingWifiInfoBundle:WifiInfo','w')
+            ->where('w.mac = :mac')
+            ->setParameter('mac',$mac);
+
+        $result = $query->getQuery()->getResult();
+
+        return $result;
+    }
     /*--- END HELP FUNCTION ---*/
 }

@@ -121,6 +121,7 @@ class DefaultController extends Controller
             $description = $request->request->get('description');
             $external_ip = $request->request->get('external_ip');
             $bssid = $request->request->get('bssid');
+            $mac = $request->request->get('mac');
 
 
             $wifi_info = array(
@@ -130,8 +131,8 @@ class DefaultController extends Controller
                 'wifiPass' => $wifiPass,
                 'description' => $description,
                 'external_ip' => &$external_ip,
-                'bssid' => $bssid
-
+                'bssid' => $bssid,
+                'mac' => $mac
             );
             $result = $wifi_manager->createData($wifi_info);
 

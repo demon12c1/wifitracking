@@ -50,6 +50,11 @@ class WifiInfo
     private $bssid_wifi;
 
     /**
+     * @var string
+     */
+    private $mac;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -220,4 +225,22 @@ class WifiInfo
     {
         return $this->bssid_wifi;
     }
+
+    /**
+     * @param string $mac
+     */
+    public function setMac($mac)
+    {
+        $this->mac = $mac;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMac()
+    {
+        return $this->mac;
+    }
+
+
 }
